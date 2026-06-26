@@ -422,20 +422,19 @@ a:hover .btn-icon-circle {
 
 /* ============================================================
    MARQUEE — infinite scroll for trusted-by
-   ============================================================ */
-
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
+   ============================================================
+   Animation is JS-driven (requestAnimationFrame) in TrustedBy.tsx.
+   We don't use CSS @keyframes because the hard snap from -50% back
+   to 0% at iteration end is visible. The JS loop increments an
+   unbounded position value, so the track never visibly "snaps" back.
+   .marquee-track only provides the flex layout — no animation here. */
 
 .marquee-track {
   display: flex;
   gap: 4rem;
   width: max-content;
-  animation: marquee 28s linear infinite;
+  transform: translate3d(0, 0, 0);
 }
-.marquee-track:hover { animation-play-state: paused; }
 
 /* ============================================================
    Z-AXIS CASCADE — overlapping step cards (desktop only).
