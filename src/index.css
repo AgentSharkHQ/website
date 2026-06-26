@@ -1,0 +1,594 @@
+@import "tailwindcss";
+
+/* ============================================================
+   AGENTSHARK — DESIGN SYSTEM v2
+   Ethereal Glass · OLED black · signature electric blue
+   ============================================================ */
+
+@theme {
+  --font-display: 'Sora', system-ui, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Base — deep but readable. Lifted from pure OLED black so
+     secondary/tertiary text has room to breathe. */
+  --color-abyss: #0A0B10;
+  --color-void: #0D0E14;
+  --color-depth: #11121A;
+  --color-surface: #16171F;
+  --color-raised: #1B1C26;
+  --color-lifted: #23242F;
+
+  /* Borders — hairline, not 1px gray */
+  --color-border: rgba(255, 255, 255, 0.07);
+  --color-border-soft: rgba(255, 255, 255, 0.04);
+  --color-border-strong: rgba(255, 255, 255, 0.12);
+
+  /* Ink — warm bone-white primary, gray-lavender mid tones.
+     All levels meet ≥4.5:1 contrast against --color-abyss
+     for small text. */
+  --color-text-primary: #F2F0EA;
+  --color-text-secondary: #9FA0B0;
+  --color-text-tertiary: #7A7B92;
+  --color-text-quaternary: #54556A;
+  --color-text-muted: #5C5D72;
+
+  /* Signature — the AgentShark electric. One accent, used sparingly. */
+  --color-accent: #5C92FF;
+  --color-accent-bright: #7AA8FF;
+  --color-accent-deep: #2B66E0;
+  --color-cyan: #22D3EE;
+  --color-aurora-a: #2A5BC0;
+  --color-aurora-b: #0F4A8A;
+
+  /* Status */
+  --color-success: #34D399;
+  --color-warn: #FBBF24;
+  --color-danger: #F87171;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #1d1d27 transparent;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--color-abyss);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-feature-settings: 'ss01', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(79, 138, 255, 0.28);
+  color: #fff;
+}
+
+/* Subtle vignette deepens the OLED feel */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(ellipse at 50% 0%, transparent 0%, transparent 55%, rgba(0,0,0,0.4) 100%);
+}
+
+/* ============================================================
+   TYPOGRAPHY UTILITIES
+   ============================================================ */
+
+.text-balance { text-wrap: balance; }
+.text-pretty { text-wrap: pretty; }
+
+/* Hero — pushed to -0.045em per spec */
+.tracking-hero {
+  letter-spacing: -0.045em;
+}
+
+.tracking-display {
+  letter-spacing: -0.04em;
+}
+
+.tracking-tight { letter-spacing: -0.025em; }
+
+/* Tabular numerals for stats */
+.tabular { font-variant-numeric: tabular-nums; }
+
+/* ============================================================
+   BACKGROUND LAYERS (fixed, pointer-events: none, z-controlled)
+   ============================================================ */
+
+/* Grain — fixed, non-scrolling, behind content */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* Orbs — refined, more focused, less spread.
+   Animations use transform-only and never override the base
+   positioning transform of an absolutely positioned orb. */
+.orb {
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 50%;
+  filter: blur(100px);
+  will-change: transform;
+}
+.orb-1 {
+  top: -15%;
+  right: -8%;
+  width: 720px;
+  height: 720px;
+  background: radial-gradient(circle, rgba(30, 91, 217, 0.18) 0%, rgba(30, 91, 217, 0.04) 40%, transparent 70%);
+  animation: orbFloat1 24s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+.orb-2 {
+  bottom: -20%;
+  left: -10%;
+  width: 640px;
+  height: 640px;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.08) 0%, rgba(34, 211, 238, 0.02) 40%, transparent 70%);
+  animation: orbFloat2 32s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+.orb-3 {
+  /* No base transform — animation drives movement entirely. */
+  top: 35%;
+  left: 45%;
+  margin-left: -450px;
+  width: 900px;
+  height: 900px;
+  background: radial-gradient(circle, rgba(79, 138, 255, 0.06) 0%, transparent 60%);
+  filter: blur(120px);
+  animation: orbFloat3 40s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes orbFloat1 {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-40px, 60px, 0); }
+}
+@keyframes orbFloat2 {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(60px, -40px, 0); }
+}
+@keyframes orbFloat3 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(40px, -30px, 0) scale(1.12); }
+}
+
+/* Dot grid — sparser, more premium */
+.dot-grid {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.35;
+  mask-image: radial-gradient(ellipse 100% 80% at 50% 50%, #000 30%, transparent 90%);
+  -webkit-mask-image: radial-gradient(ellipse 100% 80% at 50% 50%, #000 30%, transparent 90%);
+  background-image: radial-gradient(circle, rgba(255,255,255,0.12) 0.7px, transparent 0.7px);
+  background-size: 48px 48px;
+}
+
+/* ============================================================
+   DOUBLE-BEZEL (DOPPELRAND) — nested machined architecture
+   ============================================================ */
+
+.bezel-outer {
+  position: relative;
+  padding: 1.5px;
+  border-radius: 28px;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.01) 45%, rgba(255,255,255,0.05) 100%);
+  transition: background 0.7s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.bezel-outer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.01) 50%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.bezel-inner {
+  position: relative;
+  border-radius: calc(28px - 1.5px);
+  background: linear-gradient(180deg, rgba(28,29,40,0.85) 0%, rgba(20,21,30,0.85) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    inset 0 -1px 0 rgba(0,0,0,0.4),
+    0 1px 2px rgba(0,0,0,0.3);
+  height: 100%;
+  overflow: hidden;
+}
+
+.bezel-outer-accent {
+  position: relative;
+  padding: 1.5px;
+  border-radius: 28px;
+  background:
+    linear-gradient(135deg, rgba(79,138,255,0.35) 0%, rgba(79,138,255,0.05) 45%, rgba(34,211,238,0.25) 100%);
+  transition: background 0.7s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.bezel-outer-accent::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(180deg, rgba(79,138,255,0.4), rgba(79,138,255,0.05) 50%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.bezel-inner-accent {
+  position: relative;
+  border-radius: calc(28px - 1.5px);
+  background:
+    radial-gradient(ellipse at top, rgba(43, 102, 224, 0.14) 0%, transparent 50%),
+    linear-gradient(180deg, rgba(28,29,46,0.92) 0%, rgba(20,21,34,0.92) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(92,146,255,0.18),
+    inset 0 -1px 0 rgba(0,0,0,0.4);
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Hover — bezel lights up */
+.bezel-outer:hover { background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.02) 45%, rgba(255,255,255,0.08) 100%); }
+.bezel-outer-accent:hover { background: linear-gradient(135deg, rgba(79,138,255,0.5) 0%, rgba(79,138,255,0.08) 45%, rgba(34,211,238,0.4) 100%); }
+
+/* ============================================================
+   BUTTONS — Button-in-Button trailing icon architecture
+   ============================================================ */
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.8125rem 1.25rem 0.8125rem 1.5rem;
+  border-radius: 9999px;
+  background: linear-gradient(180deg, var(--color-accent-bright) 0%, var(--color-accent) 100%);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  font-family: var(--font-sans);
+  letter-spacing: -0.01em;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.2),
+    inset 0 -1px 0 rgba(0,0,0,0.2),
+    0 0 0 1px rgba(79,138,255,0.3),
+    0 1px 2px rgba(0,0,0,0.3);
+  transition: all 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 100% at 50% 0%, rgba(255,255,255,0.18) 0%, transparent 50%);
+  pointer-events: none;
+  opacity: 0.6;
+}
+.btn-primary:hover {
+  background: linear-gradient(180deg, #7FAEFF 0%, var(--color-accent-bright) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.25),
+    inset 0 -1px 0 rgba(0,0,0,0.2),
+    0 0 0 1px rgba(79,138,255,0.4),
+    0 0 40px -8px rgba(79,138,255,0.5);
+  transform: translateY(-1px);
+}
+.btn-primary:active { transform: translateY(0) scale(0.98); }
+
+.btn-icon-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(8px);
+  margin-right: -0.25rem;
+  transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+  position: relative;
+  z-index: 1;
+}
+.group:hover .btn-icon-circle,
+button:hover .btn-icon-circle,
+a:hover .btn-icon-circle {
+  transform: translate(2px, -1px) scale(1.06);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 9999px;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  font-size: 0.9375rem;
+  font-family: var(--font-sans);
+  letter-spacing: -0.01em;
+  background: rgba(17, 17, 24, 0.4);
+  backdrop-filter: blur(8px);
+  transition: all 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.btn-secondary:hover {
+  border-color: var(--color-border-strong);
+  color: var(--color-text-primary);
+  background: rgba(24, 24, 37, 0.6);
+  transform: translateY(-1px);
+}
+.btn-secondary:active { transform: translateY(0) scale(0.98); }
+
+/* ============================================================
+   SCROLL REVEAL — IntersectionObserver-driven, transform+opacity only
+   ============================================================ */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  filter: blur(6px);
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity, filter;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(20px);
+  filter: blur(4px);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal-stagger.visible > * {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+.reveal-stagger.visible > *:nth-child(1) { transition-delay: 0ms; }
+.reveal-stagger.visible > *:nth-child(2) { transition-delay: 80ms; }
+.reveal-stagger.visible > *:nth-child(3) { transition-delay: 160ms; }
+.reveal-stagger.visible > *:nth-child(4) { transition-delay: 240ms; }
+.reveal-stagger.visible > *:nth-child(5) { transition-delay: 320ms; }
+.reveal-stagger.visible > *:nth-child(6) { transition-delay: 400ms; }
+.reveal-stagger.visible > *:nth-child(7) { transition-delay: 480ms; }
+.reveal-stagger.visible > *:nth-child(8) { transition-delay: 560ms; }
+.reveal-stagger.visible > *:nth-child(9) { transition-delay: 640ms; }
+.reveal-stagger.visible > *:nth-child(10) { transition-delay: 720ms; }
+.reveal-stagger.visible > *:nth-child(11) { transition-delay: 800ms; }
+.reveal-stagger.visible > *:nth-child(12) { transition-delay: 880ms; }
+
+/* ============================================================
+   HAMBURGER MORPH — perfect X
+   ============================================================ */
+
+.hamburger-line {
+  display: block;
+  width: 18px;
+  height: 1.25px;
+  background: currentColor;
+  border-radius: 2px;
+  transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+  transform-origin: center;
+}
+.hamburger-line.top.open { transform: translateY(5.5px) rotate(45deg); }
+.hamburger-line.mid.open { opacity: 0; transform: scaleX(0.2); }
+.hamburger-line.bot.open { transform: translateY(-5.5px) rotate(-45deg); }
+
+/* ============================================================
+   MARQUEE — infinite scroll for trusted-by
+   ============================================================ */
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  display: flex;
+  gap: 4rem;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+.marquee-track:hover { animation-play-state: paused; }
+
+/* ============================================================
+   Z-AXIS CASCADE — overlapping step cards (desktop only).
+   Rotation + offset goes on the cascade wrapper; hover scales
+   the bezel-outer inside so the card itself lifts, not the
+   invisible wrapper.
+   ============================================================ */
+
+.cascade-step {
+  transition: transform 0.7s cubic-bezier(0.32, 0.72, 0, 1);
+  will-change: transform;
+}
+.cascade-step > .bezel-outer {
+  transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1), box-shadow 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+  will-change: transform;
+}
+@media (min-width: 768px) {
+  .cascade-step:nth-child(1) { transform: translate3d(0, 0, 0) rotate(-0.6deg); z-index: 1; }
+  .cascade-step:nth-child(2) { transform: translate3d(0, -10px, 0) rotate(0.3deg); z-index: 2; }
+  .cascade-step:nth-child(3) { transform: translate3d(0, 6px, 0) rotate(-0.3deg); z-index: 1; }
+  .cascade-step:hover { transform: translate3d(0, 0, 0) rotate(0); z-index: 10; }
+  .cascade-step:hover > .bezel-outer {
+    transform: translate3d(0, -8px, 0) scale(1.02);
+  }
+}
+
+/* ============================================================
+   LIVE STATUS INDICATOR — used in hero, CTA, footer
+   ============================================================ */
+
+.live-dot {
+  position: relative;
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: var(--color-accent);
+  box-shadow: 0 0 8px var(--color-accent);
+  flex-shrink: 0;
+}
+.live-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--color-accent);
+  animation: live-ping 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+@keyframes live-ping {
+  0%   { transform: scale(1);   opacity: 0.6; }
+  100% { transform: scale(3.2); opacity: 0; }
+}
+
+/* ============================================================
+   FLOATING CHIPS — gentle vertical drift for hero satellites
+   ============================================================ */
+
+.float-y {
+  will-change: transform;
+  animation: floatY 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+.float-y-a { animation-duration: 6.5s; }
+.float-y-b { animation-duration: 8s; animation-direction: reverse; }
+
+@keyframes floatY {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(0, -6px, 0); }
+}
+
+/* ============================================================
+   FADE-UP — used by Features detail panel for layer switching
+   ============================================================ */
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translate3d(0, 8px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* Detail row entry — used by Flow data panel when step changes */
+@keyframes detailIn {
+  from { opacity: 0; transform: translate3d(-6px, 0, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* Detail row entry — used by Flow data panel when step changes */
+@keyframes detailIn {
+  from { opacity: 0; transform: translate3d(-6px, 0, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* ============================================================
+   SCROLL PROGRESS — thin line under nav
+   ============================================================ */
+
+.scroll-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-cyan));
+  width: 0%;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 8px var(--color-accent);
+}
+
+/* ============================================================
+   CODE SYNTAX TOKENS
+   ============================================================ */
+
+.tk-key { color: #C792EA; }
+.tk-fn  { color: #82AAFF; }
+.tk-str { color: #C3E88D; }
+.tk-num { color: #F78C6C; }
+.tk-com { color: #5C6370; font-style: italic; }
+.tk-var { color: #EEFFFF; }
+.tk-op  { color: #89DDFF; }
+.tk-cls { color: #FFCB6B; }
+
+/* ============================================================
+   SCROLLBAR POLISH
+   ============================================================ */
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.08);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.16); }
+
+/* ============================================================
+   MOBILE OVERRIDES — graceful collapse below 768px
+   ============================================================ */
+
+@media (max-width: 767px) {
+  .bezel-outer, .bezel-outer-accent { padding: 1px; border-radius: 22px; }
+  .bezel-inner, .bezel-inner-accent { border-radius: calc(22px - 1px); }
+  .cascade-step,
+  .cascade-step > .bezel-outer { transform: none !important; }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal, .reveal-stagger > * { opacity: 1; transform: none; filter: none; }
+}
