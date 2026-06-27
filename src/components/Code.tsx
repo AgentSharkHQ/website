@@ -93,7 +93,7 @@ export default function Code() {
           {[
             { l: 'pip install agentshark', c: 'python' },
             { l: 'npm install agentshark', c: 'typescript' },
-            { l: 'go get github.com/agentshark/sdk', c: 'go' },
+            { l: 'go get github.com/agentsharkhq/agentshark/sdk/go', c: 'go' },
           ].map((cmd) => (
             <div key={cmd.l} className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl border border-border bg-raised/40 hover:border-border-strong transition-colors duration-500">
               <code className="font-mono text-[12.5px] text-text-secondary">

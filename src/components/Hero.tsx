@@ -93,7 +93,7 @@ function VerifyCard() {
               <div>
                 <div className="font-mono text-[10px] uppercase tracking-widest text-text-tertiary mb-1.5">shark_id</div>
                 <div className="font-display text-base font-semibold text-text-primary tracking-tight">shark_7a9f</div>
-                <div className="mt-1 text-xs text-text-secondary font-mono">cypher-v3 · support.cipherlabs.dev</div>
+                <div className="mt-1 text-xs text-text-secondary font-mono">agentshark.dev · v1.0</div>
               </div>
               <div className="text-right">
                 <div className="font-mono text-[10px] uppercase tracking-widest text-text-tertiary mb-1.5">trust score</div>
