@@ -9,7 +9,7 @@ A marketing/landing site for **AgentShark** ("the operating system for the agent
 ## Commands
 
 - `npm run dev` — Vite dev server (HMR).
-- `npm run build` — type-check then build (`tsc -b && vite build`). Run this to validate changes; it fails on any TS error.
+- `npm run build` — type-check then build (`tsc -b && vite build`). Run this to validate changes; it fails on any TS error. The "chunk larger than 500 kB" warning is expected — it's the deliberately code-split Three.js/globe chunk, not a problem to fix.
 - `npm run lint` — oxlint. There is **no test framework**; build + lint are the only checks.
 - `npm run preview` — serve the production build locally. Use this (not `dev`) to verify clean-URL routing.
 
@@ -30,11 +30,11 @@ To add a page: create `<name>.html` (copy `about.html`'s head, adjust meta + scr
 Custom component classes (also in `index.css`) that recur across the site:
 - `.bezel-outer` / `.bezel-inner` (and `-accent` variants) — the gradient-bordered "card" system used for every panel.
 - `.reveal` / `.reveal-stagger` — scroll-in animations. They start hidden and animate when the class `.visible` is added by an IntersectionObserver. **Any new animated section must use these classes**, or it won't appear/animate. `.reveal-stagger` cascades its direct children (hardcoded nth-child delays up to 12).
-- `.kicker` (section eyebrow), `.orb` (ambient background glows), `.live-dot`, `.cascade-step`, `.float-y`.
+- `.kicker` (section eyebrow), `.orb` / `.dot-grid` / `.grain-overlay` (ambient background layers), `.live-dot`, `.cascade-step`.
 
 **Shared page chrome.** `PageShell.tsx` wraps sub-pages with ambient background, `NavBar`, `Footer`, and the reveal IntersectionObserver. The landing page (`App.tsx`) replicates this chrome inline rather than using `PageShell`. `NavBar` and `Footer` take a `routePrefix` prop (default `''` on the landing, `'/'` on sub-pages) so in-page anchors like `#pricing` resolve to `/#pricing` from another page. `App.tsx` also contains a hash-deep-link effect (scrolls to `#id` after render on load), paired with `scroll-margin-top` rules in `index.css` so anchor targets clear the fixed navbar.
 
-**Notable components.** `SoftAurora.tsx` is a WebGL shader background (the lightweight `ogl` dependency). `Hero.tsx`'s right side is the interactive 3D agent constellation: `AgentScene.tsx` lazy-loads `AgentGlobe.tsx` (react-three-fiber + three + drei) behind an error boundary with a static-glow fallback, gating auto-motion on `prefers-reduced-motion` and drag on `(pointer: fine)`. The Three.js bundle is intentionally code-split (its own ~900KB chunk) so it never blocks first paint. All animation respects `prefers-reduced-motion`.
+**Notable components.** `SoftAurora.tsx` is a WebGL shader background (the lightweight `ogl` dependency). `Hero.tsx`'s right side is the interactive 3D agent constellation: `AgentScene.tsx` lazy-loads `AgentGlobe.tsx` (react-three-fiber + three + drei) behind an error boundary with a static-glow fallback, gating auto-motion on `prefers-reduced-motion` and drag on `(pointer: fine)`. The Three.js bundle is intentionally code-split (its own ~900KB chunk) so it never blocks first paint. Per-node agent data is deterministic in `networkData.ts` (`recordFor(i)`) and shared by both the 3D node colors and the click-to-inspect detail card, so the scene and card always agree. `AgentScene` owns the focus state; clicking a node tells `AgentGlobe` to rotate it front-and-center and opens the card. Note the hero runs **two WebGL contexts** (the aurora plus the globe) — keep that in mind for perf. All animation respects `prefers-reduced-motion`.
 
 **Deploy config.** `vercel.json` sets `cleanUrls`, `trailingSlash: false`, long-cache headers for `/assets`, and a strict CSP. The CSP only allows Google Fonts as an external origin — adding any other third-party script/style/font/origin requires updating the CSP there, or it will be blocked in production.
 

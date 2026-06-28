@@ -8,8 +8,8 @@ const pillars = [
     d: 'No cloud, chain, or framework lock-in. The same shark_id works everywhere, the way Cloudflare won as the neutral CDN while everyone else picked a side.',
   },
   {
-    t: 'A moat that compounds',
-    d: '11.2M verifications run and climbing. Every probe, escrow, and trust update sharpens a dataset no competitor can replay. The lead widens on its own.',
+    t: 'Sharper with every agent',
+    d: '11.2M verifications run and climbing. Every probe, escrow, and trust update refines the signals you rely on, so the network gets more accurate the more it sees.',
   },
 ];
 
