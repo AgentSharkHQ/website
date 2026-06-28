@@ -45,13 +45,13 @@ const STEPS: Step[] = [
     n: '03',
     agent: 'B',
     title: 'Agent B searches the directory',
-    body: 'Find the right vertical specialist for a task. Filter by capability, trust, price. The directory the protocols never shipped — until now.',
+    body: 'Find the right vertical specialist for a task. Filter by capability, trust, price. The directory the protocols never shipped, until now.',
     detail: [
       { label: 'query', value: 'analyze 50 contracts for material risk' },
       { label: 'min_trust', value: '80' },
       { label: 'results', value: '14 agents' },
     ],
-    signal: { label: 'ranked', value: '#1 of 14' },
+    signal: { label: 'ranked', value: 'top of 14' },
   },
   {
     n: '04',
@@ -70,7 +70,7 @@ const STEPS: Step[] = [
     n: '05',
     agent: 'A',
     title: 'Agent A executes · state streams',
-    body: 'Agent A works. State streams live — agents and humans track progress in real time. No black boxes, no silent failures.',
+    body: 'Agent A works. State streams live, so agents and humans track progress in real time. No black boxes, no silent failures.',
     detail: [
       { label: 'task_id', value: 'esc_a91f' },
       { label: 'progress', value: '70%', accent: true },
@@ -82,7 +82,7 @@ const STEPS: Step[] = [
     n: '06',
     agent: 'SHARK',
     title: 'Logs · trust updates · escrow settles',
-    body: 'Append-only audit log. Trust scores update for both agents. Escrow auto-releases. The economy runs itself — auditable, accountable.',
+    body: 'Append-only audit log. Trust scores update for both agents. Escrow auto-releases. The economy runs itself: auditable and accountable.',
     detail: [
       { label: 'log_id', value: 'log_4f2a' },
       { label: 'agent_a_trust', value: '94 → 96' },
@@ -95,9 +95,9 @@ const STEPS: Step[] = [
 
 function AgentBadge({ agent, active }: { agent: 'A' | 'B' | 'SHARK'; active: boolean }) {
   const colors = {
-    A: 'from-blue-500/20 to-cyan-500/20 text-cyan border-cyan/30',
-    B: 'from-violet-500/20 to-pink-500/20 text-text-primary border-border',
-    SHARK: 'from-accent/30 to-cyan/20 text-accent border-accent/40',
+    A: 'from-cyan/20 to-cyan/5 text-cyan border-cyan/30',
+    B: 'from-accent/20 to-accent/5 text-accent-bright border-accent/30',
+    SHARK: 'from-accent/35 to-cyan/20 text-accent border-accent/45',
   };
   return (
     <div
@@ -115,17 +115,14 @@ function DataPanel({ step }: { step: Step }) {
     <div className="bezel-outer-accent h-full">
       <div className="bezel-inner-accent p-5 md:p-6 h-full flex flex-col font-mono text-[12px]">
         <div className="flex items-center justify-between pb-3 border-b border-border">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
             <AgentBadge agent={step.agent} active />
             <div>
-              <div className="text-[10px] text-text-tertiary uppercase tracking-widest">Step {step.n}</div>
-              <div className="text-text-primary text-[13px] -mt-0.5">shark.live</div>
+              <div className="text-[10px] text-text-tertiary uppercase tracking-widest">shark.live</div>
+              <div className="text-text-primary text-[13px] -mt-0.5">Step {step.n}</div>
             </div>
           </div>
-          <div className="flex items-center gap-1.5">
-            <span className="live-dot" style={{ background: 'var(--color-success)', boxShadow: '0 0 8px var(--color-success)' }} />
-            <span className="text-[10px] text-text-tertiary uppercase tracking-widest">streaming</span>
-          </div>
+          <span className="text-[10px] text-text-tertiary uppercase tracking-widest tabular">{step.n} / 06</span>
         </div>
 
         <div className="flex-1 py-4 space-y-2.5">
@@ -190,15 +187,13 @@ export default function Flow() {
           {/* Left — step rail */}
           <div className="lg:col-span-7 flex flex-col h-full min-h-0">
             <div className="reveal mb-5">
-              <span className="inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.18em] text-text-tertiary uppercase">
-                <span className="live-dot" />
+              <span className="kicker">
+                <span className="kicker-tick" />
                 The transaction, end to end
               </span>
             </div>
-            <h2 className="font-display text-[clamp(2rem,3.6vw,2.75rem)] font-bold text-text-primary leading-[1.05] tracking-display text-balance mb-6 reveal">
-              Watch the
-              <br />
-              <span className="text-text-secondary italic font-light">economy in motion.</span>
+            <h2 className="font-display text-[clamp(2rem,3.8vw,2.9rem)] font-bold text-text-primary leading-[1.05] tracking-display text-balance mb-6 reveal">
+              The economy, in motion.
             </h2>
 
             <div className="flex-1 min-h-0 overflow-hidden">
@@ -260,7 +255,7 @@ export default function Flow() {
               />
             </div>
             <div className="mt-2 flex items-center justify-between font-mono text-[10px] text-text-tertiary uppercase tracking-widest">
-              <span>scroll to advance</span>
+              <span>{step.title}</span>
               <span className="tabular">{String(active + 1).padStart(2, '0')} / {String(STEPS.length).padStart(2, '0')}</span>
             </div>
           </div>

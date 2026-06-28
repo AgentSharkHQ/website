@@ -3,11 +3,13 @@ import NavBar from './components/NavBar';
 import Hero from './components/Hero';
 import TrustedBy from './components/TrustedBy';
 import Numbers from './components/Numbers';
+import Manifesto from './components/Manifesto';
 import What from './components/What';
 import Features from './components/Features';
 import How from './components/How';
 import Flow from './components/Flow';
 import Code from './components/Code';
+import Testimonials from './components/Testimonials';
 import Pricing from './components/Pricing';
 import CTA from './components/CTA';
 import Footer from './components/Footer';
@@ -44,13 +46,25 @@ export default function App() {
     return () => io.disconnect();
   }, []);
 
+  // Deep-link anchors (e.g. arriving at /#pricing from another page). On a
+  // fresh load the target section is rendered by React after the browser has
+  // already tried (and failed) to scroll to the hash, so we scroll to it once
+  // the content exists. scroll-margin-top on the targets clears the fixed nav.
+  useEffect(() => {
+    const id = window.location.hash.slice(1);
+    if (!id) return;
+    const raf = requestAnimationFrame(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'auto', block: 'start' });
+    });
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
   return (
     <div className="relative min-h-[100dvh] bg-abyss">
-      {/* Fixed ambient layers — grain, dot grid, orbs */}
+      {/* Fixed ambient layers — grain, dot grid, one faint centered glow.
+          The corner orbs were removed: they read as "random lights". */}
       <div className="grain-overlay" />
       <div className="dot-grid" />
-      <div className="orb orb-1" />
-      <div className="orb orb-2" />
       <div className="orb orb-3" />
 
       <div className="relative z-10">
@@ -63,6 +77,9 @@ export default function App() {
         <Section className="py-20 md:py-24">
           <Numbers />
         </Section>
+
+        {/* Manifesto — full-width "moment", renders its own container */}
+        <Manifesto />
 
         <Section className="py-20 md:py-24">
           <What />
@@ -85,6 +102,10 @@ export default function App() {
 
         <Section className="py-20 md:py-24">
           <Code />
+        </Section>
+
+        <Section className="py-20 md:py-24">
+          <Testimonials />
         </Section>
 
         <Section className="py-20 md:py-24">

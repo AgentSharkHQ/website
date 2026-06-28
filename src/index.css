@@ -56,6 +56,12 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+/* Anchor targets sit below the floating navbar when jumped to (on-page
+   smooth scroll and cross-page deep links alike). */
+#what, #stack, #developers, #pricing {
+  scroll-margin-top: 7rem;
+}
+
 * {
   scrollbar-width: thin;
   scrollbar-color: #1d1d27 transparent;
@@ -109,6 +115,28 @@ body::before {
 
 /* Tabular numerals for stats */
 .tabular { font-variant-numeric: tabular-nums; }
+
+/* ============================================================
+   KICKER — the one refined section label. Static, no pulsing
+   dot. A short hairline tick replaces the AI-tell "live dot".
+   ============================================================ */
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+.kicker-tick {
+  display: block;
+  width: 1.5rem;
+  height: 1px;
+  background: linear-gradient(90deg, var(--color-accent), transparent);
+}
 
 /* ============================================================
    BACKGROUND LAYERS (fixed, pointer-events: none, z-controlled)
@@ -254,11 +282,9 @@ body::before {
 .bezel-inner-accent {
   position: relative;
   border-radius: calc(28px - 1.5px);
-  background:
-    radial-gradient(ellipse at top, rgba(43, 102, 224, 0.14) 0%, transparent 50%),
-    linear-gradient(180deg, rgba(28,29,46,0.92) 0%, rgba(20,21,34,0.92) 100%);
+  background: linear-gradient(180deg, rgba(26,27,42,0.94) 0%, rgba(19,20,31,0.94) 100%);
   box-shadow:
-    inset 0 1px 0 rgba(92,146,255,0.18),
+    inset 0 1px 0 rgba(92,146,255,0.12),
     inset 0 -1px 0 rgba(0,0,0,0.4);
   height: 100%;
   overflow: hidden;
@@ -451,7 +477,7 @@ a:hover .btn-icon-circle {
   transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1), box-shadow 0.5s cubic-bezier(0.32, 0.72, 0, 1);
   will-change: transform;
 }
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .cascade-step:nth-child(1) { transform: translate3d(0, 0, 0) rotate(-0.6deg); z-index: 1; }
   .cascade-step:nth-child(2) { transform: translate3d(0, -10px, 0) rotate(0.3deg); z-index: 2; }
   .cascade-step:nth-child(3) { transform: translate3d(0, 6px, 0) rotate(-0.3deg); z-index: 1; }
@@ -521,12 +547,6 @@ a:hover .btn-icon-circle {
   to   { opacity: 1; transform: translate3d(0, 0, 0); }
 }
 
-/* Detail row entry — used by Flow data panel when step changes */
-@keyframes detailIn {
-  from { opacity: 0; transform: translate3d(-6px, 0, 0); }
-  to   { opacity: 1; transform: translate3d(0, 0, 0); }
-}
-
 /* ============================================================
    SCROLL PROGRESS — thin line under nav
    ============================================================ */
@@ -574,6 +594,9 @@ a:hover .btn-icon-circle {
 @media (max-width: 767px) {
   .bezel-outer, .bezel-outer-accent { padding: 1px; border-radius: 22px; }
   .bezel-inner, .bezel-inner-accent { border-radius: calc(22px - 1px); }
+}
+/* Cascade only engages at lg (>=1024px); flatten the stack below it. */
+@media (max-width: 1023px) {
   .cascade-step,
   .cascade-step > .bezel-outer { transform: none !important; }
 }

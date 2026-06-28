@@ -41,21 +41,15 @@ const tabs: Tab[] = [
     ],
   },
   {
-    name: 'verify.mjs',
-    lang: 'javascript',
+    name: 'verify.sh',
+    lang: 'shell',
     code: [
-      [{ tk: 'tk-com', v: '// verify any agent endpoint before interacting' }],
-      [{ tk: 'tk-key', v: 'import' }, { tk: '', v: ' { Client } ' }, { tk: 'tk-key', v: 'from' }, { tk: '', v: ' ' }, { tk: 'tk-str', v: '"agentshark"' }, { tk: '', v: ';' }],
-      [],
-      [{ tk: 'tk-key', v: 'const' }, { tk: '', v: ' shark = ' }, { tk: 'tk-key', v: 'new' }, { tk: '', v: ' ' }, { tk: 'tk-cls', v: 'Client' }, { tk: '', v: '(' }, { tk: 'tk-str', v: '"shark_abc123"' }, { tk: '', v: ');' }],
-      [],
-      [{ tk: 'tk-key', v: 'const' }, { tk: '', v: ' result = ' }, { tk: 'tk-key', v: 'await' }, { tk: '', v: ' shark.' }, { tk: 'tk-fn', v: 'verify' }, { tk: '', v: '({' }],
-      [{ tk: '', v: '  endpoint: ' }, { tk: 'tk-str', v: '"https://some-agent.com"' }, { tk: '', v: ',' }],
-      [{ tk: '', v: '  protocol: ' }, { tk: 'tk-str', v: '"a2a"' }, { tk: '', v: ',' }],
-      [{ tk: '', v: '  timeout: ' }, { tk: 'tk-num', v: '5000' }, { tk: '', v: ',' }],
-      [{ tk: '', v: '});' }],
-      [],
-      [{ tk: 'tk-var', v: 'console' }, { tk: '', v: '.' }, { tk: 'tk-fn', v: 'log' }, { tk: '', v: '(' }, { tk: 'tk-var', v: 'result' }, { tk: '', v: ');' }],
+      [{ tk: 'tk-com', v: '# verify any agent endpoint over plain HTTP' }],
+      [{ tk: 'tk-fn', v: 'curl' }, { tk: '', v: ' -X POST ' }, { tk: 'tk-str', v: 'https://mcp.agentshark.dev/verify' }, { tk: '', v: ' \\' }],
+      [{ tk: '', v: '  -H ' }, { tk: 'tk-str', v: '"Authorization: Bearer sk_live_x"' }, { tk: '', v: ' \\' }],
+      [{ tk: '', v: '  -H ' }, { tk: 'tk-str', v: '"Content-Type: application/json"' }, { tk: '', v: ' \\' }],
+      [{ tk: '', v: '  -d ' }, { tk: 'tk-str', v: '\'{"endpoint":"https://some-agent.com",' }],
+      [{ tk: '', v: '       ' }, { tk: 'tk-str', v: '"protocol":"a2a"}\'' }],
     ],
   },
 ];
@@ -77,37 +71,39 @@ export default function Code() {
   const cur = tabs[active];
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
-      {/* Left — intro */}
-      <div className="lg:col-span-4">
-        <h2 className="font-display text-[clamp(2rem,3.4vw,2.5rem)] font-bold text-text-primary leading-[1.05] tracking-display text-balance reveal">
-          One call.
-          <br />
-          <span className="text-text-secondary italic font-light">Real signal back.</span>
-        </h2>
-        <p className="mt-6 text-text-secondary text-base leading-relaxed reveal">
-          Drop the MCP server URL into your agent's runtime. Register, verify, transact — typed, async, well-documented. SDKs in Python, TypeScript, and Go.
-        </p>
-
-        <div className="mt-8 flex flex-col gap-3 reveal">
-          {[
-            { l: 'pip install agentshark', c: 'python' },
-            { l: 'npm install agentshark', c: 'typescript' },
-            { l: 'go get github.com/agentsharkhq/agentshark/sdk/go', c: 'go' },
-          ].map((cmd) => (
-            <div key={cmd.l} className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl border border-border bg-raised/40 hover:border-border-strong transition-colors duration-500">
-              <code className="font-mono text-[12.5px] text-text-secondary">
-                <span className="text-accent mr-2">$</span>
-                {cmd.l}
-              </code>
-              <span className="font-mono text-[10px] tracking-widest text-text-tertiary uppercase">{cmd.c}</span>
-            </div>
-          ))}
+    <div>
+      {/* Full-width header */}
+      <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 reveal">
+        <div className="max-w-2xl">
+          <h2 className="font-display text-[clamp(2rem,3.8vw,2.9rem)] font-bold text-text-primary leading-[1.05] tracking-display text-balance">
+            One call. Real signal back.
+          </h2>
+          <p className="mt-6 text-text-secondary text-base md:text-lg leading-relaxed text-pretty">
+            Drop the MCP server URL into your agent's runtime. Register, verify, and transact with typed,
+            async, well-documented calls. SDKs in Python, TypeScript, and Go.
+          </p>
         </div>
       </div>
 
-      {/* Right — code editor + response panel */}
-      <div className="lg:col-span-8 reveal space-y-5">
+      {/* Install commands — 3-up */}
+      <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-3 reveal-stagger">
+        {[
+          { l: 'pip install agentshark', c: 'python' },
+          { l: 'npm install agentshark', c: 'typescript' },
+          { l: 'go get .../sdk/go', c: 'go' },
+        ].map((cmd) => (
+          <div key={cmd.l} className="flex items-center justify-between gap-3 px-4 py-3.5 rounded-xl border border-border bg-raised/40 hover:border-border-strong transition-colors duration-500">
+            <code className="font-mono text-[12.5px] text-text-secondary truncate">
+              <span className="text-accent mr-2">$</span>
+              {cmd.l}
+            </code>
+            <span className="font-mono text-[10px] tracking-widest text-text-tertiary uppercase shrink-0">{cmd.c}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Code editor + response panel */}
+      <div className="mt-6 reveal space-y-5">
         {/* Editor */}
         <div className="bezel-outer">
           <div className="bezel-inner overflow-hidden">

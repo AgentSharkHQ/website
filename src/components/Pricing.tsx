@@ -56,7 +56,7 @@ const compareRows = [
   { label: 'Verifications / month', free: '100', pro: '1,000', biz: '5,000' },
   { label: 'Agents', free: '1', pro: '10', biz: '50' },
   { label: 'Trust reports', free: 'Basic', pro: 'Full + history', biz: 'Custom' },
-  { label: 'Self-hosted', free: '—', pro: '—', biz: '✓' },
+  { label: 'Self-hosted', free: 'No', pro: 'No', biz: 'Yes' },
   { label: 'Support SLA', free: 'Community', pro: '4h', biz: '1h · dedicated' },
 ];
 
@@ -138,29 +138,27 @@ function PlanCard({ plan }: { plan: (typeof plans)[number] }) {
 
 export default function Pricing() {
   return (
-    <div id="pricing" className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-      {/* Left — intro */}
-      <div className="lg:col-span-4">
-        <h2 className="font-display text-[clamp(2rem,3.4vw,2.5rem)] font-bold text-text-primary leading-[1.05] tracking-display text-balance reveal">
-          Start free.
-          <br />
-          <span className="text-text-secondary italic font-light">Scale when you're ready.</span>
+    <div id="pricing">
+      {/* Full-width header */}
+      <div className="max-w-2xl reveal">
+        <h2 className="font-display text-[clamp(2rem,3.8vw,2.9rem)] font-bold text-text-primary leading-[1.05] tracking-display text-balance">
+          Start free. Scale when you are ready.
         </h2>
-        <p className="mt-6 text-text-secondary text-base leading-relaxed reveal">
-          No surprise overages. No vendor lock-in. Every plan includes the full eleven-layer stack — pricing only changes the volume.
+        <p className="mt-6 text-text-secondary text-base md:text-lg leading-relaxed text-pretty">
+          No surprise overages, no vendor lock-in. Every plan includes the full eleven-layer stack.
+          Pricing only changes the volume.
         </p>
       </div>
 
-      {/* Right — plan grid */}
-      <div className="lg:col-span-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 reveal-stagger">
-          {plans.map((plan) => (
-            <PlanCard key={plan.n} plan={plan} />
-          ))}
-        </div>
+      {/* Plan grid */}
+      <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5 reveal-stagger">
+        {plans.map((plan) => (
+          <PlanCard key={plan.n} plan={plan} />
+        ))}
+      </div>
 
-        {/* Comparison row */}
-        <div className="mt-8 bezel-outer reveal">
+      {/* Comparison row */}
+      <div className="mt-6 bezel-outer reveal">
           <div className="bezel-inner overflow-hidden">
             <div className="grid grid-cols-4 text-xs font-mono">
               <div className="p-4 md:p-5 text-text-tertiary uppercase tracking-widest">Feature</div>
@@ -178,7 +176,6 @@ export default function Pricing() {
             ))}
           </div>
         </div>
-      </div>
     </div>
   );
 }

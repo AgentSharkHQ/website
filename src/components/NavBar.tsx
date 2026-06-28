@@ -8,7 +8,7 @@ const navItems = [
   { label: 'Docs', href: 'https://docs.agentshark.dev', external: true },
 ];
 
-export default function NavBar() {
+export default function NavBar({ routePrefix = '' }: { routePrefix?: string }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -55,7 +55,7 @@ export default function NavBar() {
             {navItems.map((item) => (
               <a
                 key={item.label}
-                href={item.href}
+                href={item.external ? item.href : `${routePrefix}${item.href}`}
                 target={item.external ? '_blank' : undefined}
                 rel={item.external ? 'noopener noreferrer' : undefined}
                 className="group relative px-3.5 py-1.5 text-[13px] text-text-secondary hover:text-text-primary transition-colors duration-300 rounded-full"
@@ -119,7 +119,7 @@ export default function NavBar() {
           {navItems.map((item, i) => (
             <a
               key={item.label}
-              href={item.href}
+              href={item.external ? item.href : `${routePrefix}${item.href}`}
               onClick={() => setOpen(false)}
               target={item.external ? '_blank' : undefined}
               rel={item.external ? 'noopener noreferrer' : undefined}

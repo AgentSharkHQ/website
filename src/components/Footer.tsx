@@ -21,7 +21,7 @@ const columns = [
   {
     title: 'Company',
     links: [
-      { l: 'About', h: '#' },
+      { l: 'About', h: '/about' },
       { l: 'Blog', h: 'https://blog.agentshark.dev', ext: true },
       { l: 'Brand', h: '#' },
       { l: 'Contact', h: 'mailto:hello@agentshark.dev' },
@@ -37,7 +37,11 @@ const columns = [
   },
 ];
 
-export default function Footer() {
+export default function Footer({ routePrefix = '' }: { routePrefix?: string }) {
+  // In-page anchors (#what, #pricing, ...) need the route prefix on sub-pages
+  // so they jump back to the landing page. Placeholders ("#") and absolute /
+  // external / mailto links are left untouched.
+  const resolveHref = (h: string) => (h.startsWith('#') && h.length > 1 ? `${routePrefix}${h}` : h);
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8">
       {/* Brand + newsletter — left column */}
@@ -91,7 +95,7 @@ export default function Footer() {
               {col.links.map((link) => (
                 <li key={link.l}>
                   <a
-                    href={link.h}
+                    href={resolveHref(link.h)}
                     target={link.ext ? '_blank' : undefined}
                     rel={link.ext ? 'noopener noreferrer' : undefined}
                     className="text-[13.5px] text-text-secondary hover:text-text-primary transition-colors duration-300"

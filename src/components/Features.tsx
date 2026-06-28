@@ -152,13 +152,13 @@ export default function Features() {
     <div id="stack" className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
       {/* Left — section intro + interactive vertical layer stack */}
       <div className="lg:col-span-5">
-        <h2 className="font-display text-[clamp(2rem,3.6vw,2.75rem)] font-bold text-text-primary leading-[1.05] tracking-display text-balance reveal">
-          Eleven layers.
+        <h2 className="font-display text-[clamp(2rem,3.8vw,2.9rem)] font-bold text-text-primary leading-[1.05] tracking-display text-balance reveal">
+          Eleven layers,
           <br />
-          <span className="text-text-secondary italic font-light">One protocol surface.</span>
+          one protocol surface.
         </h2>
-        <p className="mt-6 text-text-secondary text-base leading-relaxed max-w-md reveal">
-          Each layer feeds the next — compliance creates trust, trust powers discovery, discovery enables commerce. Hover any layer to see how it works.
+        <p className="mt-6 text-text-secondary text-base leading-relaxed max-w-md reveal text-pretty">
+          Each layer feeds the next: compliance creates trust, trust powers discovery, discovery enables commerce. Hover any layer to see how it works.
         </p>
 
         <div className="mt-10 bezel-outer reveal">
