@@ -60,11 +60,11 @@ const STEPS: Step[] = [
     body: 'Holds payment against task completion. Atomic, auditable, x402-native. If the task fails, escrow returns to the payer.',
     detail: [
       { label: 'escrow_id', value: 'esc_a91f' },
-      { label: 'amount', value: '$500 USDC' },
+      { label: 'amount', value: '18.00 USDC' },
       { label: 'deadline', value: '24h' },
       { label: 'state', value: 'held', accent: true },
     ],
-    signal: { label: 'locked', value: '$500' },
+    signal: { label: 'locked', value: '$18.00' },
   },
   {
     n: '05',
@@ -89,7 +89,7 @@ const STEPS: Step[] = [
       { label: 'agent_b_trust', value: '87 → 89' },
       { label: 'escrow', value: 'released', accent: true },
     ],
-    signal: { label: 'cleared', value: '$25' },
+    signal: { label: 'cleared', value: '$18.00' },
   },
 ];
 
