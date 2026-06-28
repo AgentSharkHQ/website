@@ -165,22 +165,6 @@ body::before {
   filter: blur(100px);
   will-change: transform;
 }
-.orb-1 {
-  top: -15%;
-  right: -8%;
-  width: 720px;
-  height: 720px;
-  background: radial-gradient(circle, rgba(30, 91, 217, 0.18) 0%, rgba(30, 91, 217, 0.04) 40%, transparent 70%);
-  animation: orbFloat1 24s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-.orb-2 {
-  bottom: -20%;
-  left: -10%;
-  width: 640px;
-  height: 640px;
-  background: radial-gradient(circle, rgba(34, 211, 238, 0.08) 0%, rgba(34, 211, 238, 0.02) 40%, transparent 70%);
-  animation: orbFloat2 32s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
 .orb-3 {
   /* No base transform — animation drives movement entirely. */
   top: 35%;
@@ -193,14 +177,6 @@ body::before {
   animation: orbFloat3 40s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-@keyframes orbFloat1 {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(-40px, 60px, 0); }
-}
-@keyframes orbFloat2 {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(60px, -40px, 0); }
-}
 @keyframes orbFloat3 {
   0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
   50% { transform: translate3d(40px, -30px, 0) scale(1.12); }
@@ -517,22 +493,6 @@ a:hover .btn-icon-circle {
 }
 
 /* ============================================================
-   FLOATING CHIPS — gentle vertical drift for hero satellites
-   ============================================================ */
-
-.float-y {
-  will-change: transform;
-  animation: floatY 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-.float-y-a { animation-duration: 6.5s; }
-.float-y-b { animation-duration: 8s; animation-direction: reverse; }
-
-@keyframes floatY {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50%      { transform: translate3d(0, -6px, 0); }
-}
-
-/* ============================================================
    FADE-UP — used by Features detail panel for layer switching
    ============================================================ */
 
@@ -548,21 +508,6 @@ a:hover .btn-icon-circle {
 }
 
 /* ============================================================
-   SCROLL PROGRESS — thin line under nav
-   ============================================================ */
-
-.scroll-progress {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 1px;
-  background: linear-gradient(90deg, var(--color-accent), var(--color-cyan));
-  width: 0%;
-  transition: width 0.1s linear;
-  box-shadow: 0 0 8px var(--color-accent);
-}
-
-/* ============================================================
    CODE SYNTAX TOKENS
    ============================================================ */
 
@@ -572,7 +517,6 @@ a:hover .btn-icon-circle {
 .tk-num { color: #F78C6C; }
 .tk-com { color: #5C6370; font-style: italic; }
 .tk-var { color: #EEFFFF; }
-.tk-op  { color: #89DDFF; }
 .tk-cls { color: #FFCB6B; }
 
 /* ============================================================

@@ -17,7 +17,7 @@ Dev vs. prod routing note: this is a multi-page app. In `npm run dev`, sub-pages
 
 ## Architecture
 
-**Stack:** Vite 8 + React 19 + Tailwind CSS v4 (via `@tailwindcss/vite`, no config file — theme is inline in CSS) + TypeScript. Deployed as a static site on Vercel.
+**Stack:** Vite 8 + React 19 + Tailwind CSS v4 (via `@tailwindcss/vite`, no config file — theme is inline in CSS) + TypeScript. WebGL via `ogl` (aurora) and `@react-three/fiber`/`three`/`drei` (hero constellation). Deployed as a static site on Vercel.
 
 **Multi-page app (MPA).** Each page is its own HTML entry with its own SEO `<title>`/meta/OG/JSON-LD, registered in `vite.config.ts` under `build.rollupOptions.input`:
 - `index.html` → `src/main.tsx` → `src/App.tsx` (landing)
@@ -34,7 +34,7 @@ Custom component classes (also in `index.css`) that recur across the site:
 
 **Shared page chrome.** `PageShell.tsx` wraps sub-pages with ambient background, `NavBar`, `Footer`, and the reveal IntersectionObserver. The landing page (`App.tsx`) replicates this chrome inline rather than using `PageShell`. `NavBar` and `Footer` take a `routePrefix` prop (default `''` on the landing, `'/'` on sub-pages) so in-page anchors like `#pricing` resolve to `/#pricing` from another page. `App.tsx` also contains a hash-deep-link effect (scrolls to `#id` after render on load), paired with `scroll-margin-top` rules in `index.css` so anchor targets clear the fixed navbar.
 
-**Notable components.** `SoftAurora.tsx` is a WebGL shader background (the `ogl` dependency). `Hero.tsx` renders it plus `AgentExplorer.tsx` — an interactive agent directory/inspector whose data comes from the procedural generator in `agentData.ts` (no backend; coherent mock agents). All animation respects `prefers-reduced-motion`.
+**Notable components.** `SoftAurora.tsx` is a WebGL shader background (the lightweight `ogl` dependency). `Hero.tsx`'s right side is the interactive 3D agent constellation: `AgentScene.tsx` lazy-loads `AgentGlobe.tsx` (react-three-fiber + three + drei) behind an error boundary with a static-glow fallback, gating auto-motion on `prefers-reduced-motion` and drag on `(pointer: fine)`. The Three.js bundle is intentionally code-split (its own ~900KB chunk) so it never blocks first paint. All animation respects `prefers-reduced-motion`.
 
 **Deploy config.** `vercel.json` sets `cleanUrls`, `trailingSlash: false`, long-cache headers for `/assets`, and a strict CSP. The CSP only allows Google Fonts as an external origin — adding any other third-party script/style/font/origin requires updating the CSP there, or it will be blocked in production.
 

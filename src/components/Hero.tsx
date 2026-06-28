@@ -1,5 +1,5 @@
 import SoftAurora from './SoftAurora';
-import AgentExplorer from './AgentExplorer';
+import AgentScene from './AgentScene';
 
 /* ============================================================
    HERO
@@ -91,9 +91,9 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Right — interactive agent inspector */}
+          {/* Right — interactive 3D agent network */}
           <div className="lg:col-span-5 reveal lg:pl-2">
-            <AgentExplorer />
+            <AgentScene />
           </div>
         </div>
       </div>
